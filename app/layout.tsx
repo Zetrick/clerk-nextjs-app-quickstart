@@ -27,6 +27,12 @@ export default function RootLayout({
                 <div className=" flex justify-center items-center bg-green-600 tracking-wider w-32 absolute right-0 h-full font-bold">
                   <SignOutButton />
                 </div>
+                <Link
+                  className=" flex justify-center items-center bg-green-700 tracking-wider w-32 absolute right-32 h-full font-bold"
+                  href={"/dashboard"}
+                >
+                  Dashboard
+                </Link>
               </div>
             </SignedIn>
             <SignedOut>
