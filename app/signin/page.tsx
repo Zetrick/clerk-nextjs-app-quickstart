@@ -17,7 +17,6 @@ export default function SignInPage() {
     const path = url.pathname;
     const newPath = path.replace(/signin.*/, "dashboard");
     const newFullURL = `${url.origin}${newPath}`;
-    console.log("Setting redirect URL to:", newFullURL);
 
     setRedirectURL(newFullURL);
   }, []);
@@ -30,13 +29,12 @@ export default function SignInPage() {
     setSendingEmail(true);
     //Call our endpoint to check if this email is an hRes and if they have a Clerk account
     //If they are an HRes but don't have a Clerk account, we'll create one for them
-    console.log("fetching");
 
     const result = await fetch(
       `/signin/emailCheck/?email=${encodeURIComponent(email)}`
     );
 
-    console.log("result: ", result);
+    console.log("Redirect URL is:", redirectURL);
 
     //Attempt sign in
     await signIn!
