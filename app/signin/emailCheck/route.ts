@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   //For the purpose of this minimal production, we'll say it is in our system and they are allowed to sign in
 
   const { totalCount } = await clerkClient.users.getUserList({
-    externalId: [email],
+    emailAddress: [email],
   });
 
   //If they do not have a Clerk account, create a Clerk account for them

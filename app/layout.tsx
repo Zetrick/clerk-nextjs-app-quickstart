@@ -24,7 +24,7 @@ export default function RootLayout({
                 <p className="bg-green-800 w-full text-center font-extrabold tracking-widest select-none py-4">
                   You are signed in!
                 </p>
-                <div className=" flex justify-center items-center bg-green-600 tracking-wider w-32 absolute right-0 h-full font-bold">
+                <div className=" flex justify-center items-center bg-green-600 tracking-wider w-32 absolute right-0 md:h-full font-bold ">
                   <SignOutButton />
                 </div>
                 <Link

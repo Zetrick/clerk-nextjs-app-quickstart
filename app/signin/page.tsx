@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignIn, useAuth } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 export default function SignInPage() {
@@ -24,34 +24,37 @@ export default function SignInPage() {
   async function submit(e: any) {
     e.preventDefault();
 
-    //Check to see that this email is an hRes in our system
-
     setSendingEmail(true);
-    //Call our endpoint to check if this email is an hRes and if they have a Clerk account
-    //If they are an HRes but don't have a Clerk account, we'll create one for them
-
-    const result = await fetch(
-      `/signin/emailCheck/?email=${encodeURIComponent(email)}`
-    );
 
     console.log("Redirect URL is:", redirectURL);
 
-    //Attempt sign in
-    await signIn!
-      .create({
-        identifier: email,
-        strategy: "email_link",
-        redirectUrl: redirectURL,
-      })
-      .then((result) => {
-        setSendingEmail(false);
-        setEmailSent(true);
-      })
-      .catch((err) => {
-        setSendingEmail(false);
-        setEmailSent(true);
-        console.error("error", err.errors[0].longMessage);
-      });
+    fetch(`/signin/emailCheck/?email=${encodeURIComponent(email)}`).then(
+      (res) => {
+        if (res.status === 200) {
+          //Attempt sign in
+          console.log("Attempting sign in...");
+
+          signIn!
+            .create({
+              identifier: email,
+              strategy: "email_link",
+              redirectUrl: redirectURL,
+            })
+            .then((result) => {
+              setSendingEmail(false);
+              setEmailSent(true);
+            })
+            .catch((err) => {
+              setSendingEmail(false);
+              setEmailSent(false);
+              console.error("error", err.errors[0].longMessage);
+            });
+        } else {
+          setSendingEmail(false);
+          setEmailSent(false);
+        }
+      }
+    );
   }
 
   return (
