@@ -1,9 +1,19 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-// This Middleware does not protect any routes by default.
-// See https://clerk.com/docs/references/nextjs/clerk-middleware for more information about configuring your Middleware
-export default clerkMiddleware();
+const authRequiredRoutes = createRouteMatcher(["/dashboard(.*)"]);
 
+export default clerkMiddleware(
+  (auth, req) => {
+    // const roles = (auth().sessionClaims?.roles as number) || 0;
+    if (authRequiredRoutes(req)) {
+      auth().protect({ unauthenticatedUrl: req.nextUrl.origin + "/signin" });
+    }
+  },
+  { debug: false }
+);
+
+//Applies next-auth only to the matching routes
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
